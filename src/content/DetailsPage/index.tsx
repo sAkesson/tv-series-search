@@ -5,6 +5,8 @@ import { getShow } from '../../api/tvSeries';
 import { Box, Paper, Stack, Typography } from '@mui/material';
 import { Markup } from 'interweave';
 import { stringWithoutHTML } from '../../helpers/strings';
+import LoadingContainer from '../../components/LoadingContainer';
+import ErrorAlert from '../../components/Alerts';
 
 type DetailsRouteParams = {
   seriesId: string;
@@ -13,6 +15,7 @@ type DetailsRouteParams = {
 const DetailsPage = () => {
   const { seriesId } = useParams<DetailsRouteParams>();
   const [show, setShow] = useState<Show | undefined>();
+  const [errorMessage, setErrorMessage] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState(true);
 
   const image = show?.image?.medium;
@@ -23,10 +26,17 @@ const DetailsPage = () => {
     setIsLoading(true);
     getShow(seriesId)
       .then((result) => setShow(result))
+      .catch((error) => {
+        if (error instanceof Error) {
+          setErrorMessage(error.message);
+        } else {
+          setErrorMessage('An unknown error occurred');
+        }
+      })
       .finally(() => setIsLoading(false));
     return () => {};
   }, []);
-
+  const hasError = errorMessage !== undefined && errorMessage !== '';
   return (
     <>
       <Paper
@@ -54,73 +64,90 @@ const DetailsPage = () => {
           </Typography>
         </Stack>
       </Paper>
-      <Box sx={{ display: 'flex', margin: 2 }}>
-        {itemHasImage && (
-          <img
-            src={show?.image?.medium}
-            alt="Girl in a jacket"
-            width="200"
-            style={{ objectFit: 'contain' }}
-          />
-        )}
-        {!itemHasImage && (
-          <Box
-            sx={{
-              flex: '1 0 auto',
-              backgroundColor: 'gray',
-              display: 'flex',
-              width: '120px',
-              maxWidth: '120px',
-              height: '168px',
-              justifyContent: 'center',
-              alignItems: 'center',
-              color: 'white',
-            }}
-          >
-            No Image
-          </Box>
-        )}
-        <Box sx={{ display: 'flex', flexDirection: 'column', marginLeft: 2 }}>
-          <div>
-            {itemHasSummary && (
-              <Typography
-                variant="subtitle1"
-                color="text.secondary"
-                component="div"
-                sx={{ height: '100%' }}
+      {isLoading && <LoadingContainer />}
+      {!isLoading && (
+        <Box className="main-content" sx={{ display: 'flex', margin: 2 }}>
+          {hasError && (
+            <ErrorAlert
+              title={'Could not find tv serie'}
+              message={errorMessage}
+            />
+          )}
+          {!hasError && (
+            <>
+              {itemHasImage && (
+                <img
+                  src={show?.image?.medium}
+                  alt="Girl in a jacket"
+                  width="200"
+                  style={{ objectFit: 'contain' }}
+                />
+              )}
+              {!itemHasImage && (
+                <Box
+                  sx={{
+                    flex: '1 0 auto',
+                    backgroundColor: 'gray',
+                    display: 'flex',
+                    width: '120px',
+                    maxWidth: '120px',
+                    height: '168px',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    color: 'white',
+                  }}
+                >
+                  No Image
+                </Box>
+              )}
+              <Box
+                sx={{ display: 'flex', flexDirection: 'column', marginLeft: 2 }}
               >
-                <Markup content={stringWithoutHTML(show?.summary ?? '')} />
-              </Typography>
-            )}
+                <div>
+                  {itemHasSummary && (
+                    <Typography
+                      variant="subtitle1"
+                      color="text.secondary"
+                      component="div"
+                      sx={{ height: '100%' }}
+                    >
+                      <Markup
+                        content={stringWithoutHTML(show?.summary ?? '')}
+                      />
+                    </Typography>
+                  )}
 
-            {!itemHasSummary && (
-              <Typography
-                variant="subtitle1"
-                color="text.secondary"
-                component="div"
-                sx={{ height: '100%' }}
-              >
-                No description found
-              </Typography>
-            )}
-          </div>
+                  {!itemHasSummary && (
+                    <Typography
+                      variant="subtitle1"
+                      color="text.secondary"
+                      component="div"
+                      sx={{ height: '100%' }}
+                    >
+                      No description found
+                    </Typography>
+                  )}
+                </div>
 
-          <Box
-            sx={{
-              display: 'flex',
-              width: '100%',
-              marginTop: 2,
+                <Box
+                  sx={{
+                    display: 'flex',
+                    width: '100%',
+                    marginTop: 2,
 
-              flexWrap: 'wrap',
-            }}
-          >
-            <ShowDetails label="Language" value={show?.language} />
-            <ShowDetails label="Status" value={show?.status} />
-            <ShowDetails label="Started" value={show?.premiered} />
-            <ShowDetails label="Ended" value={show?.ended} />
-          </Box>
+                    flexWrap: 'wrap',
+                  }}
+                >
+                  <ShowDetails label="Language" value={show?.language} />
+                  <ShowDetails label="Status" value={show?.status} />
+                  <ShowDetails label="Started" value={show?.premiered} />
+                  <ShowDetails label="Ended" value={show?.ended} />
+                </Box>
+              </Box>
+            </>
+          )}
         </Box>
-      </Box>
+      )}
     </>
   );
 };
