@@ -11,19 +11,29 @@ import React, { useState } from 'react';
 import { getSearchResults } from '../../api/tvSeries';
 import { Show } from '../../types/show';
 import ShowItem from './ShowItem';
+import ErrorAlert from '../../components/Alerts';
+import LoadingContainer from '../../components/LoadingContainer';
 
 const SearchPage = () => {
   const [search, setSearch] = useState('');
   const [shows, setShows] = useState<Show[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchTvSeries = () => {
     setIsLoading(true);
     getSearchResults(search)
       .then((result) => setShows(result))
+      .catch((error) => {
+        if (error instanceof Error) {
+          setErrorMessage(error.message);
+        } else {
+          setErrorMessage('An unknown error occurred');
+        }
+      })
       .finally(() => setIsLoading(false));
   };
-
+  const hasError = errorMessage !== undefined && errorMessage !== '';
   return (
     <>
       <Paper
@@ -66,15 +76,26 @@ const SearchPage = () => {
           </Stack>
         </Stack>
       </Paper>
-      <Box className="main-content" sx={{ width: '100vw', marginTop: 2 }}>
-        <Grid container spacing={2} justifyContent="center">
-          {shows.map((item) => (
-            <Grid item key={item.id}>
-              <ShowItem show={item} />
+      {isLoading && <LoadingContainer />}
+      {!isLoading && (
+        <Box className="main-content" sx={{ width: '100vw', marginTop: 2 }}>
+          {hasError && (
+            <ErrorAlert
+              title={'Could not find tv series'}
+              message={errorMessage}
+            />
+          )}
+          {!hasError && (
+            <Grid container spacing={2} justifyContent="center">
+              {shows.map((item) => (
+                <Grid item key={item.id}>
+                  <ShowItem show={item} />
+                </Grid>
+              ))}
             </Grid>
-          ))}
-        </Grid>
-      </Box>
+          )}
+        </Box>
+      )}
     </>
   );
 };
