@@ -1,11 +1,10 @@
+import { BASE_URL, GET_SHOW, SEARCH_SHOWS } from '../config/urls';
 import { getErrorMessage } from '../helpers/errors';
 import { SearchResponse, Show } from '../types/show';
 
 export const getSearchResults = async (search: string): Promise<Show[]> => {
   try {
-    const response = await fetch(
-      ` https://api.tvmaze.com/search/shows?q=${search}`
-    );
+    const response = await fetch(`${BASE_URL}${SEARCH_SHOWS}?q=${search}`);
 
     if (!response.ok) {
       throw getErrorMessage(response.status);
@@ -26,7 +25,7 @@ export const getSearchResults = async (search: string): Promise<Show[]> => {
 export const getShow = async (showId: string | undefined): Promise<Show> => {
   if (showId != null) {
     try {
-      const response = await fetch(`https://api.tvmaze.com/shows/${showId}`);
+      const response = await fetch(`${BASE_URL}${GET_SHOW}${showId}`);
       if (!response.ok) {
         throw getErrorMessage(response.status);
       }
