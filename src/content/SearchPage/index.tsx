@@ -70,7 +70,11 @@ const SearchPage = () => {
               }}
               sx={{ background: 'white', borderRadius: 2 }}
             />
-            <Button variant="contained" onClick={fetchTvSeries}>
+            <Button
+              data-testid="search-button"
+              variant="contained"
+              onClick={fetchTvSeries}
+            >
               Search
             </Button>
           </Stack>

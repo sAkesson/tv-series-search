@@ -1,0 +1,11 @@
+{
+    "id": 1,
+    "name": "Test tv series title",
+    "summary": "Here is a summarty of the tv series",
+    "image": {"medium": "./test-image.jpeg"},
+    "language": "English",
+    "type": "Comedy",
+    "status": "Ended",
+    "premiered": "2012-03-12",
+    "ended": "2014-12-20"
+}
