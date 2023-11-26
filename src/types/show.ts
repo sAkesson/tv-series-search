@@ -6,5 +6,11 @@ export interface SearchResponse {
 export interface Show {
   id: number;
   name: string;
-  summary: string;
+  summary: string | null;
+  image: { medium: string } | null;
+  language: string;
+  type: string;
+  status: string;
+  premiered?: string;
+  ended?: string;
 }

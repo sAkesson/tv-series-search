@@ -21,7 +21,7 @@ export const getShow = async (
     try {
       const response = await fetch(`https://api.tvmaze.com/shows/${showId}`);
       const data: Show = await response.json();
-      console.log(data);
+
       return data;
     } catch (error) {
       console.error(error);

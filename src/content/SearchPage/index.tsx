@@ -1,4 +1,12 @@
-import { Button, Paper, Stack, TextField } from '@mui/material';
+import {
+  Box,
+  Button,
+  Grid,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import React, { useState } from 'react';
 import { getSearchResults } from '../../api/tvSeries';
 import { Show } from '../../types/show';
@@ -23,33 +31,50 @@ const SearchPage = () => {
         square
         sx={{
           width: '100%',
-          height: 150,
+          height: 170,
           backgroundColor: '#142433',
           color: '#fff',
         }}
       >
-        Search Tv Series
-        <Stack direction="row" spacing={2}>
-          <TextField
-            label="Search tv series"
-            variant="filled"
-            fullWidth
-            value={search}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setSearch(event.target.value);
-            }}
-            sx={{ background: 'white', borderRadius: 2 }}
-          />
-          <Button variant="contained" onClick={fetchTvSeries}>
-            Search
-          </Button>
+        <Stack
+          sx={{ height: '100%' }}
+          className="main-content"
+          direction="column"
+          justifyContent="space-between"
+        >
+          <Typography
+            variant="h3"
+            component="h3"
+            sx={{ alignSelf: 'center', marginTop: 2 }}
+          >
+            Search Tv Series
+          </Typography>
+          <Stack direction="row" spacing={2} sx={{ margin: 2 }}>
+            <TextField
+              label="Search"
+              variant="filled"
+              fullWidth
+              value={search}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setSearch(event.target.value);
+              }}
+              sx={{ background: 'white', borderRadius: 2 }}
+            />
+            <Button variant="contained" onClick={fetchTvSeries}>
+              Search
+            </Button>
+          </Stack>
         </Stack>
       </Paper>
-      <Stack direction="column">
-        {shows.map((item) => (
-          <ShowItem key={item.id} show={item} />
-        ))}
-      </Stack>
+      <Box className="main-content" sx={{ width: '100vw', marginTop: 2 }}>
+        <Grid container spacing={2} justifyContent="center">
+          {shows.map((item) => (
+            <Grid item key={item.id}>
+              <ShowItem show={item} />
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
     </>
   );
 };
