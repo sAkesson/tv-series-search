@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Show } from '../../types/show';
-import { getShow } from '../../api/tvSeries';
-import { Box, Paper, Stack, Typography } from '@mui/material';
 import { Markup } from 'interweave';
+import { Box, Stack, Typography } from '@mui/material';
+
+import { getShow } from '../../api/tvSeries';
+import { Show } from '../../types/show';
 import { stringWithoutHTML } from '../../helpers/strings';
-import LoadingContainer from '../../components/LoadingContainer';
-import ErrorAlert from '../../components/Alerts';
+
+import {
+  ErrorAlert,
+  LoadingContainer,
+  Header,
+  ImagePlaceholder,
+} from '../../components';
 
 type DetailsRouteParams = {
   seriesId: string;
@@ -36,19 +42,12 @@ const DetailsPage = () => {
       .finally(() => setIsLoading(false));
     return () => {};
   }, []);
+
   const hasError = errorMessage !== undefined && errorMessage !== '';
+
   return (
     <>
-      <Paper
-        elevation={0}
-        square
-        sx={{
-          width: '100%',
-          height: 170,
-          backgroundColor: '#142433',
-          color: '#fff',
-        }}
-      >
+      <Header>
         <Stack
           sx={{ height: '100%' }}
           className="main-content"
@@ -63,7 +62,7 @@ const DetailsPage = () => {
             {show?.name}
           </Typography>
         </Stack>
-      </Paper>
+      </Header>
       {isLoading && <LoadingContainer />}
       {!isLoading && (
         <Box className="main-content" sx={{ display: 'flex', margin: 2 }}>
@@ -83,23 +82,7 @@ const DetailsPage = () => {
                   style={{ objectFit: 'contain' }}
                 />
               )}
-              {!itemHasImage && (
-                <Box
-                  sx={{
-                    flex: '1 0 auto',
-                    backgroundColor: 'gray',
-                    display: 'flex',
-                    width: '120px',
-                    maxWidth: '120px',
-                    height: '168px',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    color: 'white',
-                  }}
-                >
-                  No Image
-                </Box>
-              )}
+              {!itemHasImage && <ImagePlaceholder />}
               <Box
                 sx={{ display: 'flex', flexDirection: 'column', marginLeft: 2 }}
               >
@@ -134,7 +117,6 @@ const DetailsPage = () => {
                     display: 'flex',
                     width: '100%',
                     marginTop: 2,
-
                     flexWrap: 'wrap',
                   }}
                 >

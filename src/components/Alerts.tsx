@@ -1,12 +1,12 @@
-import { Alert, AlertTitle } from '@mui/material';
 import React from 'react';
+import { Alert, AlertTitle } from '@mui/material';
 
 interface ErrorProps {
   title: string;
   message: string;
 }
 
-const ErrorAlert = ({ title, message }: ErrorProps) => {
+export const ErrorAlert = ({ title, message }: ErrorProps) => {
   return (
     <Alert severity="error">
       <AlertTitle>{title}</AlertTitle>
@@ -14,5 +14,3 @@ const ErrorAlert = ({ title, message }: ErrorProps) => {
     </Alert>
   );
 };
-
-export default ErrorAlert;

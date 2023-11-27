@@ -3,6 +3,19 @@
     height: 205px;
 }
 
+.series-listing-card-text-content {
+    display: flex;
+    flex-direction: column;
+    padding-left: 16px;
+    width: 100%;
+}
+
+.series-listing-card-actions {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
 @media only screen and (max-width: 600px) {
     .series-listing-card {
         width: 100%;
