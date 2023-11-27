@@ -1,7 +1,7 @@
 import { rest } from 'msw';
 import SearchResponse from './mocks/SearchResponse.json';
 import ShowWithData from './mocks/ShowWithData.json';
-import { BASE_URL, SEARCH_SHOWS, GET_SHOW } from '../config/urls';
+import { BASE_URL, SEARCH_SHOWS, GET_SHOW } from '../configs/urls';
 
 /* ------ URLS ------ */
 export const SEARCH_SHOWS_URL = `${BASE_URL}${SEARCH_SHOWS}`;
