@@ -16,7 +16,10 @@ const server = setupServer(...handlers);
 
 describe('SearchPage flow', () => {
   beforeAll(() => server.listen());
-  afterEach(() => server.resetHandlers());
+  afterEach(() => {
+    server.resetHandlers();
+    sessionStorage.clear();
+  });
   afterAll(() => server.close());
 
   test('It searches for show', async () => {

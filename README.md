@@ -49,7 +49,14 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 ## Considerations if I had more time
 
+### General
+
+There are a few fine-tuning things I would have wished I had time for. One being how the images behaves on different devices and a more fine tuned placeholder for when images are absent.
+Another one is that I would have liked to update the SearchPage so that when you click "search" the url updates with the search text. That way you could navigate into a show and then navigate back to previous search. This could be done by having a navigate() hook in SearchPage when you click search, and add the param as default value for the searchText state in the component. But it also changes the behaviour of fetching, so that it would be a useEffect instead.
+
 ### Tests
+
+Tests could have been broken down further. For example, in the SearchPage I test the functionality of the SeriesListingCard, which could have been split into it's own file, or a separate describe. I could also have created tests that check that the info is stored in sessionStorage but it would most likely have required to separate describes() where in one we clear sessionStorage and in the other we do not.
 
 ### Persistence for API calls
 

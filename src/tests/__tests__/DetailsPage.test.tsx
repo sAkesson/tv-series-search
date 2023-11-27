@@ -6,23 +6,24 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import {
   render,
   screen,
-  fireEvent,
   waitForElementToBeRemoved,
-  findByText,
 } from '@testing-library/react';
 
 import { GET_SHOW_URL, handlers } from '../config';
 
 const server = setupServer(...handlers);
 
-describe('SearchPage flow', () => {
+describe('DetailsPage flow', () => {
   beforeAll(() => server.listen());
-  afterEach(() => server.resetHandlers());
+  afterEach(() => {
+    server.resetHandlers();
+    sessionStorage.clear();
+  });
   afterAll(() => server.close());
 
-  test('It searches for show', async () => {
-    render(
-      <MemoryRouter initialEntries={[`/details/${123}`]}>
+  test('It displays show with image and description', async () => {
+    const { container } = render(
+      <MemoryRouter initialEntries={[`/details/${1}`]}>
         <Routes>
           <Route path="/details/:seriesId" element={<DetailsPage />} />
         </Routes>
@@ -33,8 +34,49 @@ describe('SearchPage flow', () => {
       screen.getByTestId('loading-container')
     );
 
-    const driverInStart = screen.getByText(/Test tv series title/i);
-    expect(driverInStart).toBeInTheDocument();
+    const description = screen.getByText(
+      /Here is a summarty of the tv series/i
+    );
+    const image = container.querySelector('img');
+    expect(description).toBeInTheDocument();
+    expect(image).toBeInTheDocument();
+  });
+
+  test('It displays show with placeholder for image and description', async () => {
+    const showWithoutData = 2;
+    render(
+      <MemoryRouter initialEntries={[`/details/${showWithoutData}`]}>
+        <Routes>
+          <Route path="/details/:seriesId" element={<DetailsPage />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    await waitForElementToBeRemoved(() =>
+      screen.getByTestId('loading-container')
+    );
+
+    const description = screen.getByText(/No description found/i);
+    const imagePlaceholder = screen.getByText(/No Image/i);
+    expect(description).toBeInTheDocument();
+    expect(imagePlaceholder).toBeInTheDocument();
+  });
+
+  test('It handles when no show id is provided', async () => {
+    render(
+      <MemoryRouter initialEntries={[`/details/`]}>
+        <Routes>
+          <Route path="/details/" element={<DetailsPage />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    await waitForElementToBeRemoved(() =>
+      screen.getByTestId('loading-container')
+    );
+
+    const errorText = screen.getByText(/Could not find show id/i);
+    expect(errorText).toBeInTheDocument();
   });
 
   test('It handles 404 errors', async () => {
@@ -45,7 +87,7 @@ describe('SearchPage flow', () => {
     );
 
     render(
-      <MemoryRouter initialEntries={[`/details/${123}`]}>
+      <MemoryRouter initialEntries={[`/details/${1}`]}>
         <Routes>
           <Route path="/details/:seriesId" element={<DetailsPage />} />
         </Routes>
@@ -70,7 +112,7 @@ describe('SearchPage flow', () => {
     );
 
     render(
-      <MemoryRouter initialEntries={[`/details/${123}`]}>
+      <MemoryRouter initialEntries={[`/details/${1}`]}>
         <Routes>
           <Route path="/details/:seriesId" element={<DetailsPage />} />
         </Routes>
@@ -95,7 +137,7 @@ describe('SearchPage flow', () => {
     );
 
     render(
-      <MemoryRouter initialEntries={[`/details/${123}`]}>
+      <MemoryRouter initialEntries={[`/details/${1}`]}>
         <Routes>
           <Route path="/details/:seriesId" element={<DetailsPage />} />
         </Routes>

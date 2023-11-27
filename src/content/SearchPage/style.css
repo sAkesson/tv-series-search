@@ -19,6 +19,6 @@
 @media only screen and (max-width: 600px) {
     .series-listing-card {
         width: 100%;
-        width: calc(100vw - 36px) ;
+        width: 100vw;
     }
 }
