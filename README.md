@@ -1,6 +1,24 @@
-# Getting Started with Create React App
+# tv-series-search
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+In this project you can search up tv series and see detailed information about them. This project is a code test provided by a company.
+
+## Get started
+
+1. Clone project
+2. Run `npm install` to get all node modules
+3. Run `npm start` to start the project
+
+## General project structure
+
+In `src` the project is divided into several folders to indicate which logic belongs to which context.
+
+`api` - handles all API calls\
+`components` - where all general components are stored\
+`configs` - ts files that holds constants and configs that are used throughout the project (like urls, CSS rules used for emotion etc)\
+`content` - pages and their specific child components\
+`helpers` - general helpers in different areas that are be used throughout the project\
+`tests` - where everything related to tests are stored\
+`types` - Where are types that are used throughout the projects are stored
 
 ## Available Scripts
 
@@ -29,18 +47,14 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+## Considerations if I had more time
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Tests
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Persistence for API calls
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+To keep things simple I opted for using session storage. In part because a user probably wouldn't search for the show on multiple occasions and in that case the data would just take up storage. Further more, information might change (like image, status and end date), meaning that I would then have to account for those types of changes too, which would only complicate the solution.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Implementing a favorite show list
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+For this I would have kept an array of the show-ids in localStorage. To keep track of the list inside the project (and for an easy toggle-functionality) I would have implemented Redux so that the page re-rendered the components on change. Redux would also hold the interface and update localStorage according to changes that were made.

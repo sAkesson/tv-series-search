@@ -1,4 +1,4 @@
-import { BASE_URL, GET_SHOW, SEARCH_SHOWS } from '../config/urls';
+import { BASE_URL, GET_SHOW, SEARCH_SHOWS } from '../configs/urls';
 import { getErrorMessage } from '../helpers/errors';
 import { SearchResponse, Show } from '../types/show';
 
