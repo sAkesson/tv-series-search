@@ -1,6 +1,5 @@
 import React from 'react';
 import { Markup } from 'interweave';
-import { Show } from '../../types/show';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -11,14 +10,19 @@ import {
   Typography,
 } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+
 import { shortenString, stringWithoutHTML } from '../../helpers/strings';
+import { Show } from '../../types/show';
+
+import { ImagePlaceholder } from '../../components';
+
 import './style.css';
 
-interface ShowItem {
+interface SeriesListingCardProps {
   show: Show;
 }
 
-const ShowItem = ({ show }: ShowItem) => {
+const SeriesListingCard = ({ show }: SeriesListingCardProps) => {
   const navigate = useNavigate();
   const image = show?.image?.medium;
   const itemHasImage = image !== undefined;
@@ -32,37 +36,13 @@ const ShowItem = ({ show }: ShowItem) => {
             component="img"
             sx={{ width: 120 }}
             image={image}
-            alt="Live from space album cover"
+            alt={show.name}
           />
         )}
 
-        {!itemHasImage && (
-          <Box
-            sx={{
-              flex: '1 0 auto',
-              backgroundColor: 'gray',
-              display: 'flex',
-              width: '120px',
-              maxWidth: '120px',
-              height: '168px',
-              justifyContent: 'center',
-              alignItems: 'center',
-              color: 'white',
-            }}
-          >
-            No Image
-          </Box>
-        )}
+        {!itemHasImage && <ImagePlaceholder />}
 
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            paddingLeft: 2,
-            width: '100%',
-            alignItems: 'stretch',
-          }}
-        >
+        <Box className="series-listing-card-text-content">
           <Typography component="div" variant="h5">
             {show.name}
           </Typography>
@@ -88,7 +68,7 @@ const ShowItem = ({ show }: ShowItem) => {
               No description found
             </Typography>
           )}
-          <Box sx={{ width: '100%', display: 'flex', justifyContent: 'end' }}>
+          <Box className="series-listing-card-actions">
             <Button
               variant="outlined"
               size="small"
@@ -104,4 +84,4 @@ const ShowItem = ({ show }: ShowItem) => {
   );
 };
 
-export default ShowItem;
+export default SeriesListingCard;

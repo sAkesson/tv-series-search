@@ -1,18 +1,11 @@
-import {
-  Box,
-  Button,
-  Grid,
-  Paper,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
 import React, { useState } from 'react';
+import { Box, Button, Grid, Stack, TextField, Typography } from '@mui/material';
+
 import { getSearchResults } from '../../api/tvSeries';
 import { Show } from '../../types/show';
-import ShowItem from './ShowItem';
-import ErrorAlert from '../../components/Alerts';
-import LoadingContainer from '../../components/LoadingContainer';
+
+import { ErrorAlert, LoadingContainer, Header } from '../../components';
+import SeriesListingCard from './SeriesListingCard';
 
 const SearchPage = () => {
   const [search, setSearch] = useState('');
@@ -33,19 +26,12 @@ const SearchPage = () => {
       })
       .finally(() => setIsLoading(false));
   };
+
   const hasError = errorMessage !== undefined && errorMessage !== '';
+
   return (
     <>
-      <Paper
-        elevation={0}
-        square
-        sx={{
-          width: '100%',
-          height: 170,
-          backgroundColor: '#142433',
-          color: '#fff',
-        }}
-      >
+      <Header>
         <Stack
           sx={{ height: '100%' }}
           className="main-content"
@@ -79,7 +65,7 @@ const SearchPage = () => {
             </Button>
           </Stack>
         </Stack>
-      </Paper>
+      </Header>
       {isLoading && <LoadingContainer />}
       {!isLoading && (
         <Box className="main-content" sx={{ width: '100vw', marginTop: 2 }}>
@@ -93,7 +79,7 @@ const SearchPage = () => {
             <Grid container spacing={2} justifyContent="center">
               {shows.map((item) => (
                 <Grid item key={item.id}>
-                  <ShowItem show={item} />
+                  <SeriesListingCard show={item} />
                 </Grid>
               ))}
             </Grid>
