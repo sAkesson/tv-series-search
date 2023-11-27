@@ -39,6 +39,7 @@ export const getShow = async (showId: string | undefined): Promise<Show> => {
     if (cachedData !== null) {
       return JSON.parse(cachedData);
     }
+
     try {
       const response = await fetch(`${BASE_URL}${GET_SHOW}${showId}`);
       if (!response.ok) {

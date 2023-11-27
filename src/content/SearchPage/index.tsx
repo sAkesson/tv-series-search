@@ -41,7 +41,7 @@ const SearchPage = () => {
           <Typography
             variant="h3"
             component="h3"
-            sx={{ alignSelf: 'center', marginTop: 2 }}
+            sx={{ alignSelf: 'center', marginTop: 2, px: 2 }}
           >
             Search Tv Series
           </Typography>

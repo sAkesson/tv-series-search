@@ -57,7 +57,7 @@ const DetailsPage = () => {
           <Typography
             variant="h3"
             component="h3"
-            sx={{ alignSelf: 'center', marginTop: 2 }}
+            sx={{ alignSelf: 'center', marginTop: 2, px: 2 }}
           >
             {show?.name}
           </Typography>
@@ -77,7 +77,7 @@ const DetailsPage = () => {
               {itemHasImage && (
                 <img
                   src={show?.image?.medium}
-                  alt="Girl in a jacket"
+                  alt={show?.name}
                   width="200"
                   style={{ objectFit: 'contain' }}
                 />
@@ -95,7 +95,9 @@ const DetailsPage = () => {
                       sx={{ height: '100%' }}
                     >
                       <Markup
-                        content={stringWithoutHTML(show?.summary ?? '')}
+                        content={stringWithoutHTML(
+                          show?.summary ?? 'No description found'
+                        )}
                       />
                     </Typography>
                   )}
@@ -141,9 +143,9 @@ const ShowDetails = ({
   value,
 }: {
   label: string;
-  value: string | undefined;
+  value: string | undefined | null;
 }) => {
-  if (value === undefined) {
+  if (value === undefined || value === null) {
     return <></>;
   }
   return (
